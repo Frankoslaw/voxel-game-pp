@@ -1,0 +1,28 @@
+[package]
+name = "voxel-game"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.8"
+serde = "1.0"
+colored = { version = "2.0", optional = true }
+bevy-inspector-egui = "0.13.0"
+bevy_asset_loader = "0.12.1"
+
+[dependencies.bevy]
+version = "0.8.1"
+features = ["render", "bevy_winit", "dynamic"]
+
+# Dependencies for native only.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies.bevy]
+version = "0.8.1"
+features = ["x11", "wayland"]
+
+[profile.dev]
+opt-level = 3
+
+[profile.dev.package."*"]
+opt-level = 3

@@ -1,3 +1,13 @@
+// Top, Front, Left, Right, Back, Bottom
+enum FACE_IDS {
+    Top = 0,
+    Front = 1,
+    Left= 2,
+    Right = 3,
+    Back = 4,
+    Bottom = 5,
+}
+
 pub const VERTICES: [[[f32; 3]; 4]; 6] = [
     [[0.0, 1.0, 0.0], [0.0, 1.0, 1.0], [1.0, 1.0, 0.0], [1.0, 1.0, 1.0]], // Top
     [[0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]], // Front
@@ -39,3 +49,5 @@ pub const CHUNK_SIZE: [usize; 3] = [
     16, // y height
     16  // z depth
 ];
+
+pub const RENDER_DISTANCE: i32 = 5;

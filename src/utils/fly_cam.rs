@@ -3,6 +3,8 @@ use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
 use bevy::{window::{Window, Windows}};
 
+use crate::user::player::Player;
+
 
 // Mouse data
 #[derive(Default)]
@@ -21,7 +23,7 @@ impl Default for MovementSettings {
     fn default() -> Self {
         Self {
             sensitivity: 0.00012,
-            speed: 12.,
+            speed: 30.,
         }
     }
 }
@@ -50,7 +52,8 @@ fn setup_player(mut commands: Commands) {
             transform: Transform::from_xyz(-2.0, 5.0, 5.0),
             ..Default::default()
         })
-        .insert(FlyCam);
+        .insert(FlyCam)
+        .insert(Player::default());
 }
 
 fn player_move(

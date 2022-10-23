@@ -1,5 +1,5 @@
 use bevy::{prelude::*, render::{render_resource::PrimitiveTopology, mesh::Indices}};
-use crate::voxel_constants::*;
+use super::voxel_constants::*;
 
 #[derive(Default)]
 pub struct ChunkMeshBuilder {
@@ -41,6 +41,13 @@ impl ChunkMeshBuilder {
 
         self.uvs.extend_from_slice(&UVS);
         self.face_count+=1;
+    }
+
+    
+    pub fn add_cube(&mut self, coord: [u32; 3]) {
+        for face_index in 0..6 {
+            self.add_face(coord, face_index)
+        }
     }
 
     pub fn build(self)->Mesh{

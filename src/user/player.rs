@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, ecs::schedule::ShouldRun};
 
 use crate::world::voxel_constants::CHUNK_SIZE;
 
@@ -7,7 +7,6 @@ use crate::world::voxel_constants::CHUNK_SIZE;
 pub struct Player{
     pub local_pos: IVec3,
     pub last_local_pos: IVec3,
-    pub local_pos_changed: bool
 }
 
 impl Player {
@@ -24,32 +23,26 @@ impl Default for Player{
     fn default() -> Self {
         Player { 
             last_local_pos: IVec3::new(0, 0, 0), 
-            local_pos: IVec3::new(0, 0, 0),
-            local_pos_changed: true 
+            local_pos: IVec3::new(0, 0, 0)
         }
     }
 }
 
-pub struct PlayerPlugin;
-impl Plugin for PlayerPlugin{
-    fn build(&self, app: &mut App) {
-        app
-            .add_system(player_pos_change);
-    }
-}
-
-fn player_pos_change(
+pub fn run_if_player_pos_changed(
     mut player_query: Query<(&Transform, &mut Player)>
-){
+) -> ShouldRun
+{
     if let Ok((player_tf, mut player)) = player_query.get_single_mut() {
-        player.local_pos_changed = false;
         player.local_pos = Player::global_to_local_pos(player_tf.translation);
 
         if Player::global_to_local_pos(player_tf.translation) == player.last_local_pos {
-            return;
+            return ShouldRun::No
         }
 
         player.last_local_pos = Player::global_to_local_pos(player_tf.translation);
-        player.local_pos_changed = true;
+
+        return ShouldRun::Yes
     }
+
+    return ShouldRun::No
 }

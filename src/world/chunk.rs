@@ -4,6 +4,8 @@ use crate::{user::player::*, utils::debug::run_if_not_paused};
 
 use super::{voxel_constants::{CHUNK_SIZE, FACE_CHECKS, RENDER_DISTANCE}, chunk_mesh_builder::ChunkMeshBuilder, world::{MyWorldState, BlockType}};
 
+use noise::{NoiseFn, Perlin, Seedable};
+
 #[derive(Component, Default, Clone, Copy)]
 pub struct Chunk{
     pub need_update: bool,
@@ -14,11 +16,21 @@ pub struct Chunk{
 impl Chunk {
     fn new(local_pos: IVec3) -> Self {
         let mut blocks = [[[0; CHUNK_SIZE[2]]; CHUNK_SIZE[1]]; CHUNK_SIZE[0]];
+        let perlin = Perlin::new(1);
 
         for x in 0..CHUNK_SIZE[0] {
-            for y in 0..CHUNK_SIZE[1] {
-                for z in 0..CHUNK_SIZE[2] {
-                    if (local_pos.y * CHUNK_SIZE[1] as i32 + y as i32) < 10 {
+            for z in 0..CHUNK_SIZE[2] {
+                let real_x = local_pos.x * CHUNK_SIZE[0] as i32 + x as i32;
+                let real_z = local_pos.z * CHUNK_SIZE[2] as i32 + z as i32;
+
+                let height = ((perlin.get([
+                    real_x as f64 / 100.0, 
+                    real_z as f64 / 100.0
+                ]) + 1.) * 30.0) as i32;
+
+                for y in 0..CHUNK_SIZE[1] {
+
+                    if (local_pos.y * CHUNK_SIZE[1] as i32 + y as i32) < height{
                         blocks[x][y][z] = 1;
                     }
                 }
@@ -71,7 +83,12 @@ impl Plugin for ChunkPlugin {
             .add_system_set(
                 SystemSet::new()
                     .with_run_criteria(run_if_not_paused)
+                    .with_run_criteria(run_if_player_pos_changed)
                     .with_system(chunk_loader)
+            )
+            .add_system_set(
+                SystemSet::new()
+                    .with_run_criteria(run_if_not_paused)
                     .with_system(update_chunk)
             );
     }
@@ -124,10 +141,6 @@ fn chunk_loader(
     let mut chunk_to_load = [[[true; (RENDER_DISTANCE*2+1) as usize]; (RENDER_DISTANCE*2+1) as usize]; (RENDER_DISTANCE*2+1) as usize];
 
     if let Ok(player) = player_query.get_single() {
-        if !player.local_pos_changed{
-            return;
-        }
-
         for (chunk_entity, chunk) in chunk_query.iter(){
             if  ((chunk.local_pos.x - player.local_pos.x).abs() > RENDER_DISTANCE) || 
                 ((chunk.local_pos.y - player.local_pos.y).abs() > RENDER_DISTANCE) ||

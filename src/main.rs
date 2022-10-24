@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use user::player::PlayerPlugin;
 use utils::{fly_cam::FlyCamPlugin, debug::DebugPlugin};
 use world::{world::WorldPlugin, chunk::ChunkPlugin};
 
@@ -23,7 +22,6 @@ fn main(){
     .add_plugins(DefaultPlugins)
     .add_plugin(DebugPlugin)
     .add_plugin(FlyCamPlugin)
-    .add_plugin(PlayerPlugin)
     .add_plugin(WorldPlugin)
     .add_plugin(ChunkPlugin)
     .add_startup_system(setup)

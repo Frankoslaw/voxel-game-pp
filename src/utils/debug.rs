@@ -32,7 +32,8 @@ fn toggle_wireframe(
     keys: Res<Input<KeyCode>>, 
     mut debug_data: ResMut<DebugData>,
 ) {
-    if keys.just_pressed(KeyCode::Numpad0) {
+    if keys.just_pressed(KeyCode::Numpad0)  ||
+    (keys.pressed(KeyCode::LAlt) && keys.just_pressed(KeyCode::W)) {
         debug_data.wireframe = !debug_data.wireframe;
     }
 }
@@ -41,7 +42,8 @@ fn tooggle_pause(
     keys: Res<Input<KeyCode>>, 
     mut debug_data: ResMut<DebugData>,
 ){
-    if keys.just_pressed(KeyCode::Numpad1) {
+    if keys.just_pressed(KeyCode::Numpad1) ||
+        (keys.pressed(KeyCode::LAlt) && keys.just_pressed(KeyCode::P)) {
         debug_data.pause = !debug_data.pause;
     }
 }

@@ -50,4 +50,4 @@ pub const CHUNK_SIZE: [usize; 3] = [
     16  // z depth
 ];
 
-pub const RENDER_DISTANCE: i32 = 5;
+pub const RENDER_DISTANCE: i32 = 8;

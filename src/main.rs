@@ -1,4 +1,9 @@
-use bevy::{prelude::*, pbr::wireframe::{WireframePlugin, WireframeConfig}, render::render_resource::{SamplerDescriptor, AddressMode, FilterMode}};
+use bevy::{
+    prelude::*, 
+    pbr::wireframe::{WireframePlugin, WireframeConfig}, 
+    render::render_resource::{SamplerDescriptor, AddressMode, FilterMode}, window::{PresentMode}, 
+    diagnostic::{LogDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}
+};
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_flycam::{FlyCam, NoCameraPlayerPlugin, MovementSettings};
 
@@ -14,6 +19,7 @@ fn main() {
             .set(WindowPlugin {
                 primary_window: Some(Window {
                     fit_canvas_to_parent: true,
+                    present_mode: PresentMode::AutoNoVsync,
                     ..default()
                 }),
                 ..default()
@@ -43,8 +49,8 @@ fn main() {
         })
         .init_resource::<PlayerLastPos>()
         .init_resource::<LoadedChunks>()
-        .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
-        .add_plugin(RapierDebugRenderPlugin::default())
+        .add_plugin(LogDiagnosticsPlugin::default())
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_startup_system(load_chunk_texture)
         .add_startup_system(setup)
         .add_system(load_chunk_system)

@@ -1,14 +1,12 @@
-use std::time::SystemTime;
-
 use bevy::prelude::IVec3;
 use block_mesh::ndshape::ConstShape;
 use noise::{Perlin, NoiseFn};
 
 use crate::prelude::*;
 
-pub fn block_generation(pos: IVec3) -> [Block; ChunkShape::SIZE as usize]{
+pub fn block_generation(pos: IVec3, seed: u32) -> [Block; ChunkShape::SIZE as usize]{
     let mut voxels = [EMPTY; ChunkShape::SIZE as usize];
-    let noise_fn = Perlin::new(SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs() as u32);
+    let noise_fn = Perlin::new(seed);
 
     for x in 1..ChunkShape::ARRAY[0] - 1 {
         for z in 1..ChunkShape::ARRAY[2] - 1 {

@@ -14,9 +14,9 @@ pub fn load_chunk_texture(mut commands: Commands, server: Res<AssetServer>) {
 }
 
 pub const ATTRIBUTE_TEXTURE_INDEX: MeshVertexAttribute =
-    MeshVertexAttribute::new("TextureIndex", 988540917, VertexFormat::Uint32);
+    MeshVertexAttribute::new("TextureIndex", 4294967293, VertexFormat::Uint32);
 
-pub const CUSTOM_UV: MeshVertexAttribute = MeshVertexAttribute::new("CustomUV", 52894552143, VertexFormat::Float32x2);
+pub const CUSTOM_UV: MeshVertexAttribute = MeshVertexAttribute::new("CustomUV", 4294967294, VertexFormat::Float32x2);
 
 #[derive(AsBindGroup, Debug, Clone, TypeUuid)]
 #[uuid = "642b56d7-f1bf-4fd6-be25-6fed49891480"]

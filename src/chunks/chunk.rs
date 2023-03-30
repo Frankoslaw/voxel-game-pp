@@ -32,10 +32,10 @@ impl Default for Chunk {
 }
 
 impl Chunk {
-    pub fn chunk_from_pos(pos: IVec3) -> Self {
+    pub fn chunk_from_pos(pos: IVec3, seed: u32) -> Self {
         Self {
             pos,
-            blocks: block_generation(pos),
+            blocks: block_generation(pos, seed),
             dirty: false,
             neighboars: [
                 Weak::new(),

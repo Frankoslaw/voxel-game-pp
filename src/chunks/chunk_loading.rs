@@ -31,6 +31,7 @@ pub fn load_chunk_system(
     mut meshes: ResMut<Assets<Mesh>>,
     mut chunk_material: ResMut<Assets<ChunkMaterial>>,
     texture: Res<ChunkTexture>,
+    time: Res<Time>,
 ){
     if let Ok(player_transform) = player_query.get_single() {
         let player_local_pos = PlayerLastPos::from_world_pos(player_transform.translation);
@@ -65,7 +66,7 @@ pub fn load_chunk_system(
                         }
 
                         // Spawn new chunks
-                        let chunk = Chunk::chunk_from_pos(chunk_pos);
+                        let chunk = Chunk::chunk_from_pos(chunk_pos, time.elapsed_seconds() as u32);
                         let mesh = chunk_mesh_generation(&chunk);
 
                         let chunk_ent = commands.spawn(MaterialMeshBundle {
